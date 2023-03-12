@@ -132,7 +132,7 @@ class VeriKaydi():
         self.imlec = self.baglan.cursor()
 
         # Bu sorgu yapısı ile bağlanılan veri tabanında böyle bir tablo varsa üzerine yazma işlemi yap yoksa oluştur demiş oluyoruz.
-        sorgu = "CREATE TABLE IF NOT EXISTS pizza_order (kullanici_Adi TEXT, kullanici_kimligi TEXT, kredi_karti_bilgisi TEXT, siparis_aciklamasi TEXT, siparis_zamani TEXT,kredi_karti_sifresi TEXT)"
+        sorgu = "CREATE TABLE IF NOT EXISTS pizza_order (kullanici_Adi TEXT, kullanici_kimligi TEXT, kredi_karti_bilgisi TEXT, siparis_aciklamasi TEXT, siparis_zamani TEXT,kredi_karti_sifresi TEXT, toplam_odeme INT)"
 
         self.imlec.execute(sorgu)
 
@@ -141,18 +141,19 @@ class VeriKaydi():
     def baglanti_kes(self):
         self.baglan.close()
 
-    def verileri_ekle(self,kullanici_adi,tc_kimlik, kart_bilgileri, siparis_aciklamasi, siparis_zamani, sifre):
+    def verileri_ekle(self,kullanici_adi,tc_kimlik, kart_bilgileri, siparis_aciklamasi, siparis_zamani, sifre, toplam_odeme):
         self.kullanici_adi = kullanici_adi
         self.tc_kimlik = tc_kimlik
         self.kart_bilgileri = kart_bilgileri
         self.siparis_aciklamasi = siparis_aciklamasi
         self.siparis_zamani = siparis_zamani
         self.sifre = sifre
+        self.toplam_odeme = toplam_odeme
 
         # Kullanıcıdan gelen değerleri ekrana yazdırmak için  bu sorgu yapısını kullanıyoruz. Bu yapı yukarıda oluşturduğumuz tablo yapısı içerisine değerleri kayıt edecek.
-        sorgu = "INSERT INTO pizza_order VALUES (?,?,?,?,?,?)"
+        sorgu = "INSERT INTO pizza_order VALUES (?,?,?,?,?,?,?)"
 
-        self.imlec.execute(sorgu,(kullanici_adi,tc_kimlik, kart_bilgileri, siparis_aciklamasi, siparis_zamani, sifre))
+        self.imlec.execute(sorgu,(kullanici_adi,tc_kimlik, kart_bilgileri, siparis_aciklamasi, siparis_zamani, sifre, toplam_odeme))
 
         self.baglan.commit()
 
@@ -345,7 +346,7 @@ def main():
     """
     
     print("\n{},\nFiyat: {}".format(aciklama, fiyat))
-    veri_kaydi.verileri_ekle(kullanici_adi,tc_kimlik,kart_bilgileri,aciklama,siparis_zamani,sifre)
+    veri_kaydi.verileri_ekle(kullanici_adi,tc_kimlik,kart_bilgileri,aciklama,siparis_zamani,sifre, fiyat)
 
 
 main()
